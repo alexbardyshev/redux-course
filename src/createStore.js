@@ -1,5 +1,3 @@
-// This is Redux
-
 export function createStore(rootReducer, initialState) {
     let state = rootReducer(initialState, {type: '__INIT__'})
     const subscribers = [];
