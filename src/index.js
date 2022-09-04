@@ -3,7 +3,7 @@ import './styles.css';
 import thunk from "redux-thunk";
 import {logger} from "redux-logger/src";
 import {rootReducer} from "./redux/rootReducer";
-import {decrement, increment} from "./redux/actions";
+import {asyncIncrement, decrement, increment} from "./redux/actions";
 import {ASYNC_INCREMENT} from "./redux/types";
 
 const counter = document.getElementById('counter')
@@ -22,12 +22,10 @@ const themeBtn = document.getElementById('theme')
 //     }
 // }
 
-const store = createStore(rootReducer,
-    0,
+const store = createStore(
+    rootReducer,
     applyMiddleware(thunk, logger)
 );
-
-window.store = store;
 
 addBtn.addEventListener('click', () => {
     store.dispatch(increment())
@@ -38,15 +36,13 @@ subBtn.addEventListener('click', () => {
 })
 
 asyncBtn.addEventListener('click', () => {
-    setTimeout(() => {
-        store.dispatch(increment())
-    }, 2000)
+    store.dispatch(asyncIncrement())
 })
 
 store.subscribe(() => {
     const state = store.getState();
 
-    counter.textContent = state;
+    counter.textContent = state.counter;
 })
 
 store.dispatch({ type: 'INIT_APPLICATION' })
